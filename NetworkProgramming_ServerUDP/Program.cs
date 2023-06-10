@@ -23,7 +23,6 @@ namespace NetworkProgramming_ServerUDP
                 //send response to the client
                 byte[] response = Encoding.UTF8.GetBytes("Thanks for the request");
                 server.Send(response, response.Length, clientEndPoint);
-                Console.WriteLine("Response sent!");
             }
         }
     }
