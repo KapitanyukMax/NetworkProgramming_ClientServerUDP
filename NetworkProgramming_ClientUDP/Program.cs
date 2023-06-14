@@ -2,32 +2,29 @@
 using System.Net.Sockets;
 using System.Text;
 
-namespace NetworkProgramming_ClientUDP
+namespace NetworkProgrammingHW_ClientUDP
 {
     internal class Program
     {
         private static void Main(string[] args)
         {
-            //endpoint = ip address + port (127.10.55.255:1024)
-
-            UdpClient udpClient = new UdpClient();
-
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("10.7.174.170"), 3344);
+            UdpClient client = new UdpClient();
+            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("192.168.1.107"), 3040);
 
             string message = string.Empty;
             do
             {
-                Console.Write("Enter a message (enter 'END to exit): ");
-                message = Console.ReadLine();
+                Console.Write("Enter a message (enter 'END' to exit): ");
+                message = Console.ReadLine() ?? string.Empty;
                 byte[] data = Encoding.UTF8.GetBytes(message);
-                udpClient.Send(data, data.Length, endPoint);
+                client.Send(data, data.Length, endPoint);
 
                 IPEndPoint? serverEndPoint = null;
-                byte[] response = udpClient.Receive(ref serverEndPoint);
-                string responseMessage = Encoding.UTF8.GetString(response);
-                Console.WriteLine($"Server response: {responseMessage} : {DateTime.Now.ToShortTimeString()}");
-
+                string response = Encoding.UTF8.GetString(client.Receive(ref serverEndPoint));
+                Console.WriteLine($"Server response: {response} : {DateTime.Now.ToShortTimeString()}");
             } while (message != "END");
+
+            Console.WriteLine("Closing the client application...");
         }
     }
 }
